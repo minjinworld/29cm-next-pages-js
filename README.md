@@ -1,40 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# 🛒 29CM 클론코딩 프로젝트
 
-## Getting Started
+29CM의 디자인과 사용자 경험을 참고하여 제작한 쇼핑몰 웹 애플리케이션입니다.  
+React 기반의 Next.js로 개발되었으며, 깔끔한 UI와 동적인 상품 페이지를 구현했습니다.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🔧 기술 스택
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Next.js (pages router 기반)**
+- **React**
+- **JavaScript**
+- **Context API (전역 상태 관리)**
+- **Vercel 배포**
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+---
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## ✨ 주요 기능
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+- 상품 리스트 출력
+- 카테고리 필터 기능
+- 상품 클릭 시 상세 페이지 이동 (동적 라우팅)
+- 장바구니 수량 변경 UI
+- 반응형 UI
+- 전역 상태 관리(Context API)
+- 무한스크롤 구현 (추가된 기능)
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🎯 배포 링크
 
-To learn more about Next.js, take a look at the following resources:
+👉 https://29cm-clone.vercel.app
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🙋‍♀️ 제작자
 
-## Deploy on Vercel
+이민진 — Next.js와 쇼핑몰 구조를 실습하며 UI/UX 구성 및 기능 구현을 중점으로 제작했습니다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+---
