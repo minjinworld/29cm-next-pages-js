@@ -1,0 +1,174 @@
+next.js 강의
+기존 29cm 카드 ui 붙여넣기
+
+_document 에 테일윈드 연결
+
+_app 에 공통레이아웃 설정 header / footer
+이미지 넣고싶으면 public 폴더에 넣음
+
+index.js 에 전체적인 섹션 구축
+
+--------------------------------------------------
+
+기존에 card ui 6개에서 9~12개로 추가해주기
+더보기버튼 누르면 이미지를 하나씩 추가를 ->
+slice 사용해서 3개씩 추가로 변경해주기
+
+--------------------------------------------------
+
+더보기버튼 누르면 하단으로 내려가게 처리해보기
+useRef를 null 값으로 만들어 변수안에 담고
+반복되는 card 컴포넌트 위에 빈 div를 설정하고 ref 에 설정한 변수 담아주기 (ref={bottomRef})
+
+addImage 기능을 담은 함수 if문안에 타이머함수설정 옵셔널체이닝 연산자 사용해서 scrollIntoView(특정요소에 스크롤 자동 조정) 설정
+
+--------------------------------------------------
+페이지하나 추가해보기
+pages 폴더 안쪽에 order.js 파일 하나 만들어서(넥스트에서는 파일이름 소문자여도됨) 서브페이지 구축하기(링크로 연결할거라 import는 안해도됨 아마?)
+그리고 Card.js 에서 .img_box를 Link 태그로 변경해서 라우팅해보기
+_app.js logo 영역에도 Link 태그 설정(홈으로 돌아가는건 그냥 / )
+
+--------------------------------------------------
+order.js 에서 수량버튼 누르면 상품갯수 추가제거해보기
+
+--------------------------------------------------
+_app.js 에서 헤더 스크롤이벤트 진행해보기(useEffect 사용해서 class 제어)
+const [isScrolled, setIsScrolled] = useState(false); 선언하고 
+
+<header className={isScrolled ? "header_area scroll" : "header_area"}> 설정
+useEffect 설명
+
+--------------------------------------------------
+필터링 작업해보기
+
+우선 const [cardData, setCardData] 안에 category 키를 추가해서 분류 원하는대로 설정 / id 도 설정해주자
+{
+    + id: 1, // additionalData 까지 총 9개
+    imgSrc: "https://img.29cm.co.kr/next-product/2023/03/13/6df115b934da4129a4a154606084bfdd_20230313145108.jpg?width=400",
+    brandName: "프리츠한센",
+    productName: "프리츠한센 - IKEBANA SMALL(BRASS)",
+    price: "178,000",
+    discount: "8%",
+    discountPrice: "163,760",
+    likes: "10,642",
+    reviews: "201",
+
+    + category: "홈데코"
+},
+
+
+그리고 헤더 안에 담겨있는 tab_list 를 클릭할때 index.js 에 담겨 있는 카드를 필터링 해야하기때문에
+전역 상태로 관리된 값을 다른 컴포넌트로 전달해야함
+
+그럼 우선 _app.js 에서 배열로 설정하고 
+const categories = ["전체", "가구", "조명", "홈데코", "아트"];
+
+선택된 카테고리(필터링)만 상태로 관리하는 state도 작성
+const [selectedCategory, setSelectedCategory] = useState("전체"); 
+
+기존 li 들을 map 을 사용해서 변경해줌
+{/* <li className="tab_list" onClick={() => setSelectedCategory("전체")}><a href="#none">전체</a></li>
+<li className="tab_list" onClick={() => setSelectedCategory("가구")}><a href="#none">가구</a></li>
+<li className="tab_list" onClick={() => setSelectedCategory("조명")}><a href="#none">조명</a></li>
+<li className="tab_list" onClick={() => setSelectedCategory("홈데코")}><a href="#none">홈데코</a></li>
+<li className="tab_list" onClick={() => setSelectedCategory("아트")}><a href="#none">아트,디자인</a></li> */}
+
+->
+
+{categories.map((category, index) => (
+    <li
+    key={index}
+    className="tab_list"
+    onClick={() => setSelectedCategory(category)}
+    // 클릭하면 배열안에 나눠놓은 category 키값에 들어있는 아이들만 출력되게 설정   
+    >
+    <a href="#none">{category}</a>
+    </li>
+))}
+
+
+그리고 _app.js에서 관리 중인 selectedCategory 상태를 각 페이지 컴포넌트에 전달하기 위해
+<Component {...pageProps} selectedCategory={selectedCategory} /> 써줌
+
+index.js 에 선택된 카테고리로 필터링 문법 작성
+const filteredData =
+selectedCategory === "전체"
+    ? cardData
+    : cardData.filter((data) => data.category === selectedCategory);
+
+
+마지막으로 index.js 에
+{/* 필터링을 하기 위해 설정해준 filteredData 를 cardData 에서 대체하면서 key={data.id}로 변경 */}
+{filteredData.map((data, index) => (
+<Card
+    key={data.id} //필터링할때 cardData 정의한 id 로 설정
+    // 리액트에서 리스트 렌더링할 때는 각 항목마다 고유한 key가 필요
+    // 성능 최적화와 오류 방지를 위해 index 대신 data.id를 쓰는 게 좋음
+
+    {...data}
+    // 스프레드 전달로 변경
+    // 깔끔하고 유지보수 쉬움
+    // prop 명시가 중요한 상황이 아닐땐 스프레드 전달이 좋음
+/>
+))}
+
+------------------------------------------------------
+동적라우팅
+order.js 파일을 이제 동적 라우팅되도록 만들어보자
+우선 order 이라는 폴더를 만들어서 안에 [id].js 를 만들어서 복붙
+
+동적라우팅을 위해 전역 상태 관리하기 위해서 context/CardContext.js 만들어서
+최상단에 import { createContext, useContext, useState } from "react"; 적어줌
+createContext() 를 변수안에 담아줌 -> const CardContext = createContext();
+
+export const CardProvider = ({ children }) => {} 안에
+index.js에 있는 cardData, additionalData 등등 옮겨줌
+
+예제파일에 서브페이지 이미지 다운받아서 public 에 옮겨주고 
+detailImgSrc: "/images/fritzhansen_detail.jpg", 추가
+id 1번만  explain 추가
+
+return 문에 
+<CardContext.Provider value={{ cardData, setCardData, addCards }}>
+    {children}
+</CardContext.Provider>
+적어줌
+
+React Context를 더 편하게 쓰기 위한 커스텀 훅도 export 해줌 -> export const useCard = () => useContext(CardContext);
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+useRouter 를 써야해서 [id].js 에 const router = useRouter(); 적어주고 상단에 
+import { useRouter } from "next/router"; 적어줌
+
+동적라우팅을 위한 코드!!!!! 설명과 함께 적어주고
+
+CardContext에 있는 cardData 배열에서 id가 일치하는 상품을 찾아서 원하는 키에 접근시켜 바뀌어야하는 설명이나 이미지를 설정해줌
+
+
+------------------------------------------------------
+반응형 구축 & flex -> grid 로 변경
+------------------------------------------------------
+
+무한스크롤 구현
+index.js 에서 수정
+useEffect  사용 import 해주고
+더보기버튼만 없애주면됨
+
+------------------------------------------------------
+라우팅 끝나면 스크롤 되지 않은 객체의 서브페이지 새로고침시 출력되지 않는 문제해결
+------------------------------------------------------
+콘솔창에 오류뜨는거 해결
+svg 태그안에 camelcase, className, 테일윈드 주석
+------------------------------------------------------
+vercel 배포
+readme 파일정리
+------------------------------------------------------
+
+마지막으로 
+next.js 셋팅해보고
+만들고싶은 반복 ui 하나 골라서
+jsx 문법으로 구축한다음 컴포넌트 생성해보기(map도 사용해보기)
+헤더랑 푸터도 구축해주면 좋음
+
+서브페이지하나만들어서 연결해주기
+이벤트하나 넣어보기
