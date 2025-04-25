@@ -29,7 +29,7 @@ React 기반의 Next.js로 개발되었으며, 깔끔한 UI와 동적인 상품 
 
 ## 🎯 배포 링크
 
-👉 https://29cm-clone.vercel.app
+👉 [https://29cm-clone.vercel.app](https://29cm-next-pages-js-kz1f.vercel.app/)
 
 ---
 
